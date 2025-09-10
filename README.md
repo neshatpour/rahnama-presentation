@@ -62,7 +62,7 @@ Feel free to contribute by submitting pull requests or reporting issues. Be kind
      data_sent......................: 2.2 MB 7.4 kB/s
      http_req_blocked...............: avg=174.05µs min=67.8µs   med=150.69µs max=2.79ms  p(90)=275.35µs p(95)=339.11µs
      http_req_connecting............: avg=117.38µs min=46.5µs   med=99.26µs  max=1.62ms  p(90)=188.87µs p(95)=237.27µs
-   ✗ http_req_duration..............: avg=296.65ms min=463.61µs med=2.95ms   max=5.93s   p(90)=537.97ms p(95)=2.62s   
+     http_req_duration..............: avg=296.65ms min=463.61µs med=2.95ms   max=5.93s   p(90)=537.97ms p(95)=2.62s   
        { expected_response:true }...: avg=369.91ms min=463.61µs med=3.24ms   max=5.93s   p(90)=1.09s    p(95)=3.04s   
      http_req_failed................: 19.99% ✓ 3078      ✗ 12317
      http_req_receiving.............: avg=528.35µs min=20.56µs  med=194.77µs max=11.33ms p(90)=1.35ms   p(95)=2.1ms   
@@ -74,8 +74,6 @@ Feel free to contribute by submitting pull requests or reporting issues. Be kind
      iterations.....................: 3078   10.25137/s
      vus............................: 1      min=1       max=50 
      vus_max........................: 50     min=50      max=50 
-
-
-running (5m00.3s), 00/50 VUs, 3078 complete and 0 interrupted iterations
-default ✓ [ 100% ] 00/50 VUs  5m0s
-time="2025-09-10T18:17:16Z" level=error msg="thresholds on metrics 'http_req_duration' have been crossed"
+     running (5m00.3s), 00/50 VUs, 3078 complete and 0 interrupted iterations
+     default ✓ [ 100% ] 00/50 VUs  5m0s
+     time="2025-09-10T18:17:16Z" level=error msg="thresholds on metrics 'http_req_duration' have been crossed"
