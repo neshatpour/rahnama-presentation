@@ -7,8 +7,7 @@ from datetime import datetime
 from typing import Optional
 
 BASE_URL = "http://localhost:9000"
-DURATION = 60
-
+DURATION = 300  # 5 minutes for more data
 
 class LoadTester:
     def __init__(self, base_url: str = BASE_URL, duration: int = DURATION):
@@ -16,6 +15,7 @@ class LoadTester:
         self.duration = duration
         self.start_time = None
         self.threads = []
+        self.cache_miss_keys = []  # Store fixed set of keys for cache misses
 
     def check_app_running(self) -> bool:
         print("Checking if the Flask app is running...")
@@ -48,7 +48,6 @@ class LoadTester:
                 timestamp = int(time.time())
                 key = f"test_key_{timestamp}_{random.randint(1000, 9999)}"
                 value = f"test_value_{timestamp}"
-
                 payload = {"key": key, "value": value}
                 requests.post(f"{self.base_url}/items", json=payload, timeout=5)
                 time.sleep(0.2)
@@ -85,12 +84,21 @@ class LoadTester:
         print("List items endpoint completed")
 
     def test_cache_miss(self) -> None:
+        # Generate a fixed set of 5 random keys for cache misses
+        if not self.cache_miss_keys:
+            timestamp = int(time.time())
+            self.cache_miss_keys = [
+                f"cache_miss_{timestamp}_{random.randint(1000, 9999)}_{i}"
+                for i in range(5)
+            ]
+            print(f"Generated cache miss keys: {self.cache_miss_keys}")
+
         while time.time() - self.start_time < self.duration:
             try:
-                timestamp = int(time.time())
-                random_key = f"cache_miss_{timestamp}_{random.randint(1000, 9999)}_{random.randint(1000, 9999)}"
-                requests.get(f"{self.base_url}/items/{random_key}", timeout=5)
-                time.sleep(0.5)
+                # Randomly select one of the fixed keys
+                key = random.choice(self.cache_miss_keys)
+                requests.get(f"{self.base_url}/items/{key}", timeout=5)
+                time.sleep(0.05)  # High frequency for more cache misses
             except requests.exceptions.RequestException:
                 pass
         print("Cache miss endpoint completed")
@@ -126,7 +134,6 @@ class LoadTester:
 
         print("\nLoad test completed!")
 
-
 def main():
     try:
         import requests
@@ -137,7 +144,6 @@ def main():
 
     tester = LoadTester()
     tester.run_load_test()
-
 
 if __name__ == "__main__":
     main()
